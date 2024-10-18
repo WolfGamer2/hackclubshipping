@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack Club Shipping Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to HackClub Shipping!</h1>
+        <p>Seamless international shipping for Hack Clubs and more.</p>
+    </header>
+
+    <section class="create-shipment">
+        <h2>Create a Shipment</h2>
+        <form id="shipmentForm">
+            <input type="text" id="recipientName" placeholder="Recipient Name" required>
+            <input type="text" id="address" placeholder="Recipient Address" required>
+            <input type="text" id="item" placeholder="Item to Ship" required>
+            <button type="submit">Create Shipment</button>
+        </form>
+    </section>
+
+    <section class="track-shipment">
+        <h2>Track Your Shipment</h2>
+        <input type="text" id="trackingNumber" placeholder="Enter Tracking Number">
+        <button id="trackButton">Track</button>
+        <p id="trackingStatus"></p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
