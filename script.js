@@ -1,80 +1,44 @@
-// script.js
-
-document.getElementById('shipmentForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const recipient = document.getElementById('recipientName').value;
-    const address = document.getElementById('address').value;
-    const item = document.getElementById('item').value;
-
-    alert(`Shipment created for ${recipient} at ${address} with item: ${item}`);
-});
-
-document.getElementById('trackButton').addEventListener('click', function() {
-    const trackingNumber = document.getElementById('trackingNumber').value;
-    
-    if (trackingNumber === "1234") {
-        document.getElementById('trackingStatus').innerText = "Your shipment is on its way!";
-    } else {
-        document.getElementById('trackingStatus').innerText = "Tracking number not found.";
-    }
-});
-
 let shipmentHistory = [];
 
-document.getElementById('shipmentForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+// Function to show notification messages
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
     
-    const recipient = document.getElementById('recipientName').value;
-    const address = document.getElementById('address').value;
-    const item = document.getElementById('item').value;
+    // Fade in and out
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+        notification.remove(); // Remove from DOM after fading out
+    }, 3000); // Show for 3 seconds
+}
 
-    const shipment = { recipient, address, item };
-    shipmentHistory.push(shipment);
-
-    alert(`Shipment created for ${recipient} at ${address} with item: ${item}`);
-    updateHistory();
-});
-
+// Function to update the shipment history display
 function updateHistory() {
     const historyList = document.getElementById('historyList');
     historyList.innerHTML = ''; // Clear the current list
 
     shipmentHistory.forEach((shipment, index) => {
         const li = document.createElement('li');
-        li.textContent = `${index + 1}: ${shipment.item} to ${shipment.recipient}, Address: ${shipment.address}`;
+        li.textContent = `${index + 1}: ${shipment.item} to ${shipment.recipient}, Address: ${shipment.address}, Tracking Number: ${shipment.trackingNumber}`;
         historyList.appendChild(li);
     });
 }
 
+// Function to simulate API calls
 async function createShipmentAPI(shipment) {
-    // Simulate an API call
     console.log("Sending shipment data to API...", shipment);
-    // Here, you would use fetch() or axios to send data to your shipping API
     return new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 }
 
-// Modify the form submission
-document.getElementById('shipmentForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    
-    const recipient = document.getElementById('recipientName').value;
-    const address = document.getElementById('address').value;
-    const item = document.getElementById('item').value;
-
-    const shipment = { recipient, address, item };
-    shipmentHistory.push(shipment);
-
-    await createShipmentAPI(shipment); // Call the API simulation
-    alert(`Shipment created for ${recipient} at ${address} with item: ${item}`);
-    updateHistory();
-});
-
+// Function to generate a random tracking number
 function generateTrackingNumber() {
     return Math.floor(Math.random() * 10000).toString();
 }
 
-// Modify the shipment creation to include a tracking number
+// Form submission event listener
 document.getElementById('shipmentForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
@@ -86,11 +50,11 @@ document.getElementById('shipmentForm').addEventListener('submit', async functio
     shipmentHistory.push(shipment);
 
     await createShipmentAPI(shipment); // Call the API simulation
-    alert(`Shipment created for ${recipient} at ${address} with item: ${item} (Tracking Number: ${shipment.trackingNumber})`);
+    showNotification(`Shipment created for ${recipient} at ${address} with item: ${item} (Tracking Number: ${shipment.trackingNumber})`);
     updateHistory();
 });
 
-// Update the tracking feature
+// Tracking button event listener
 document.getElementById('trackButton').addEventListener('click', function() {
     const trackingNumber = document.getElementById('trackingNumber').value;
     const shipment = shipmentHistory.find(s => s.trackingNumber == trackingNumber);
@@ -101,4 +65,3 @@ document.getElementById('trackButton').addEventListener('click', function() {
         document.getElementById('trackingStatus').innerText = "Tracking number not found.";
     }
 });
-
